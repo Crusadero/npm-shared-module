@@ -1,53 +1,58 @@
 # npm-shared-module
 
 ## Description
-Simple project to demonstrate how to make your own npm module for shared data that you can install on you other related project ( situable for microservices architecture or client / server shared data ).
+This project demonstrates how to create an npm module for sharing data across multiple projects. It's especially useful for microservices architectures or when sharing data between client and server.
 
-This allows you to write you code in single place and import it from this shared module.
+With this module, you can centralize shared code in one place and easily import it into your other related projects.
 
 ## Versioning
-Each branch will have its own version that will look like "v1.0.0-branch_name" each commit will patch version ( update last version digit ) by Github Actions and add new tag with this version.
+Each branch will have its own version following the format `v1.0.0-branch_name`. Every commit triggers a patch update (incrementing the last digit) using GitHub Actions, which also tags the new version automatically.
 
-Main branch is "release" that have version without branch name on it.
+The main branch, named `release`, will have versions without the branch name appended.
 
-### Merging into branches
-When you merge your current branch to some other it will automatically pick your current feature branch package.json version and even if you will pick wrong version on merge conflict git hooks will run and replace it to correct one.
+### Merging Between Branches
+When merging branches, the `package.json` version will automatically be updated to match the version from the source branch. If there are merge conflicts related to the version, Git hooks will ensure the correct version is applied.
 
-On commit Github Actions will patch current version and create new version tag.
+GitHub Actions will patch the version and create a new tag with each commit.
 
-> [!CAUTION]
-> Merging by pull requests is not tested.
->
-> Possible troubles with versions.
+> **⚠️ Note:** Merging through pull requests has not been fully tested and may cause issues with versioning.
 
-## Instalation
-By default you have to create "build-artifacts", "release" branches.
+## Installation
+### Prerequisites
+Ensure you have two branches created: `build-artifacts` and `release`.
 
-- Create "build-artifacts" and "release" branches.
-- Install npm modules and hooks by running "npm install".
+### Steps
+1. Create the required branches:
+    ```
+    git branch build-artifacts
+    git branch release
+    ```
 
-To install this module by npm run this command:
+2. Install npm dependencies and set up the necessary hooks:
+    ```
+    npm install
+    ```
+
+### Installing the Module
+To install the module in your project, run:
 ```
 npm install github:your_name_or_organization/your_shared_module_repository#v1.0.0
 ```
+- Replace `your_username_or_organization` with your GitHub username or organization.
+- Replace `your_shared_module_repository` with the repository name where this module is hosted.
+- Replace `v1.0.0` with the correct version tag.
 
-- Replace "your_username_or_organization" with your actual github username or organization name.
-- Replace "your_shared_module_repository" with your actual github repository where this module will be hosted.
-- Replace "v1.0.0" with your actual version tag
-
-> [!IMPORTANT]
-> If you are hosting this module on private repository then do this steps.
+> **Important:**
+> If the repository is private, you must configure Git to use a fine-grained personal access token:
 >
->> Force git to fetch by link with fine grained personal access token to be able to access this private repository.
->>
->> ```
->> git config --global url."https://your_personal_access_token@github.com/your_username_or_organization/your_shared_module_repository.git".insteadOf "https://github.com/your_username_or_organization/your_shared_module_repository.git"
->> ```
->> - Replace "your_username_or_organization" with your actual github username or organization name.
->> - Replace "your_shared_module_repository" with your actual github repository where this module will be hosted.
+> ```
+> git config --global url."https://your_personal_access_token@github.com/your_username_or_organization/your_shared_module_repository.git".insteadOf "https://github.com/your_username_or_organization/your_shared_module_repository.git"
+> ```
+> - Replace `your_personal_access_token` with your actual token.
+> - Update `your_username_or_organization` and `your_shared_module_repository` with the appropriate values.
 
 ## Hosting
-This npm module can be hosted as public or private github repository.
+You can host this npm module in either a public or private GitHub repository.
 
-### Private
-If you are using private repository for your shared npm module you will have to create "fine grained personal access token" with read access ( Contens ) to be able to install it by your CI / CD or hosting.
+### Private Repositories
+If you're hosting the module in a private repository, you'll need a fine-grained personal access token with `read:contents` permission to allow your CI/CD pipelines or hosting services to install the module.
