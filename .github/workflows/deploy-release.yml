@@ -1,0 +1,86 @@
+name: Build and deploy release
+
+on:
+  push:
+    branches:
+      - 'release'
+
+permissions:
+ contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Enable CI
+        run: npm ci --only=production
+
+      - name: Init github
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+        
+      - name: Checkout to build-artifacts
+        run: |
+          git fetch origin build-artifacts
+          git checkout --force build-artifacts
+  
+      - name: Remove previous build folder
+        run: |
+          rm -rf build
+          git add .
+          git commit -m "Removed previous build version"
+          
+      - name: Checkout to release
+        run: |
+          git fetch origin release
+          git checkout release
+
+      - name: Build project from release branch
+        run: |
+          npm install
+          npm run build
+      
+      - name: Patch release version
+        # "git clean --force" because it will not affect "build" folder and "package.json"
+        run: |
+          git clean --force 
+          git fetch origin release
+          git checkout release
+
+          npm version patch --no-git-tag-version
+      
+      - name: Get package.json version
+        id: version
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          VERSION="v$PACKAGE_VERSION"
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Push new package.json package-lock.json version to release
+        run: |
+          git add package.json package-lock.json
+          git commit -m "Updated release package.json package-lock.json version to ${{ steps.version.outputs.VERSION }}"
+          git push origin release
+
+      - name: Checkout to build-artifacts
+        run: |
+          git fetch origin build-artifacts
+          git checkout --force build-artifacts
+      
+      - name: Copy release package.json
+        run: git checkout release package.json
+
+      - name: Push build folder
+        run: |
+          git add --force build/
+          git add --force package.json
+          git commit -m "Add build artifacts ${{ steps.version.outputs.VERSION }}"
+          git tag ${{ steps.version.outputs.VERSION }}
+          git push --tags origin build-artifacts
