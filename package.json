@@ -1,0 +1,27 @@
+{
+  "name": "npm-shared-module",
+  "version": "1.0.0-master",
+  "description": "Simple project to demonstrate how to make your own npm module for shared data that you can install on you other related project ( situable for microservices architecture or client / server shared data ).",
+  "private": true,
+  "main": "./build/src/index.js",
+  "types": "./build/src/index.d.ts",
+  "files": [
+    "./build/src"
+  ],
+  "scripts": {
+    "build": "npx tsc",
+    "prepare": "husky",
+    "lint": "eslint --fix",
+    "postprepare": "node ./scripts/postprepare.js"
+  },
+  "keywords": [],
+  "author": "Crusadero",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.5.1",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "husky": "^9.1.5"
+  }
+}
