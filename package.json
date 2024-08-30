@@ -1,6 +1,6 @@
 {
   "name": "npm-shared-module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple project to demonstrate how to make your own npm module for shared data that you can install on you other related project ( situable for microservices architecture or client / server shared data ).",
   "private": true,
   "main": "./build/src/index.js",
