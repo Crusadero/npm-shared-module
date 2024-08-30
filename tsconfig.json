@@ -1,0 +1,26 @@
+{
+  "include": ["./src/**/*"],
+  "exclude": ["build"],
+  "compilerOptions": {
+    "incremental": false,
+    "target": "ES2020",
+    "module": "CommonJS",
+    "lib": ["ES2020"],
+    "moduleResolution": "Node",
+    "outDir": "build",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "declaration": true,
+    
+    "declarationMap": false,
+    "esModuleInterop": true,
+    "strictPropertyInitialization": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+  }
+}
